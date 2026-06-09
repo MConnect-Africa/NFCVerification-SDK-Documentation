@@ -1,6 +1,6 @@
 # NfcDocVerification Library
 
-A comprehensive In-House Android library for scanning Machine Readable Zones (MRZ) from identity documents and reading data from NFC-enabled biometric IDs.
+A comprehensive Android library for scanning Machine Readable Zones (MRZ) from identity documents and reading data from NFC-enabled biometric IDs.
 
 ## Features
 - **MRZ Scanning**: Uses Google ML Kit for fast and accurate text recognition of MRZ data from document images.
