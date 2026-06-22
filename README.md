@@ -8,6 +8,27 @@ A comprehensive Android library for scanning Machine Readable Zones (MRZ) from i
 - **Progress Tracking**: Provides real-time updates on the NFC reading process (Authenticating, Connecting, Reading Data, etc.).
 - **Data Parsing**: Automatically parses MRZ and NFC data into a structured `DocumentData` object, including personal details and the face photo.
 
+## Setup 
+
+Place the `isocel_config.json` file in your application's `assets` directory located at:
+
+`src/main/assets`
+
+The `assets` directory should be at the same level as the `java` (or `kotlin`) and `res` directories under `src/main`.
+
+Example project structure:
+
+```
+src/
+└── main/
+    ├── java/
+    ├── res/
+    ├── assets/
+    │   └── isocel_config.json
+    └── AndroidManifest.xml
+```
+
+
 ## Installation
 
 ### 1. Add GitHub Packages Repository
@@ -23,8 +44,8 @@ dependencyResolutionManagement {
          name = "GitHubPackages"
          url = uri("maven_package_url")
          credentials {
-            username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_USERNAME")
-            password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
          }
       }
    }
@@ -35,8 +56,8 @@ dependencyResolutionManagement {
 Add your GitHub username and personal access token to your `local.properties` file:
 
 ```properties
-gpr.user=YOUR_GITHUB_USERNAME
-gpr.key=YOUR_GITHUB_PERSONAL_ACCESS_TOKEN
+gpr.user=PROVIDED_USERNAME
+gpr.key=PROVIDED_PASSWORD
 ```
 
 ### 3. Add the Dependency
@@ -45,7 +66,7 @@ Add the dependency to your app's `build.gradle.kts` file:
 
 ```kotlin
 dependencies {
-   implementation("co.isocel:nfcdocverification:<version>")
+   implementation("co.isocel:nfcdocverification:<version>") // 1.0.8
 }
 ```
 
@@ -144,6 +165,7 @@ lifecycleScope.launch {
             is NfcReadProgress.Connecting -> // Show "Connecting..."
             is NfcReadProgress.ReadingPersonalData -> // Show "Reading Data..."
             is NfcReadProgress.ReadingPhoto -> // Show "Reading Photo..."
+            is NfcReadProgress.ReadingSignature -> // Show "Reading Signature..."
             is NfcReadProgress.Done -> {
                 val data = progress.documentData
                 // Successfully read: data.fullName, data.facePhoto, etc.
@@ -167,6 +189,7 @@ The `DocumentData` object contains the following information (if available on th
 - `dateOfBirth` (and `formattedDob`)
 - `dateOfExpiry` (and `formattedExpiry`)
 - `facePhoto` (as a `Bitmap`)
+- `signature` (as a `Bitmap`)
 - `mrzRaw`
 - `county`
 - `subCounty`
